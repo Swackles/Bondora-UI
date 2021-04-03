@@ -1,7 +1,7 @@
 import React from "react";
 import Invoice from '../../services/InvoiceService';
 import CartTableRow from './../../components/cartTableRow';
-import { Paper, TableContainer, TableHead, TableRow, TableCell, TableBody, Table, Typography } from '@material-ui/core';
+import { Button, Paper, TableContainer, TableHead, TableRow, TableCell, TableBody, Table, Typography } from '@material-ui/core';
 
 interface State {
   invoice: Invoice | null
@@ -17,6 +17,7 @@ class IndexCart extends React.Component<any, State> {
 
     this.removeFromCart = this.removeFromCart.bind(this);
     this.loadCart = this.loadCart.bind(this);
+    this.print = this.print.bind(this);
   }
 
   public componentDidMount() {
@@ -42,6 +43,25 @@ class IndexCart extends React.Component<any, State> {
         this.setState({ ...this.state, invoice: value });
       });
     }
+  }
+
+  private print() {
+    this.state.invoice?.Print().then((text) => {
+      if (text == null) return;
+      var element = document.createElement('a');
+      text = text.replaceAll('\\n', '\n');
+      text = text.replaceAll('"', '');
+      
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + text);
+      element.setAttribute('download', 'Invoice.txt');
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    });
   }
 
   public render(): JSX.Element {
@@ -72,6 +92,13 @@ class IndexCart extends React.Component<any, State> {
                 <TableCell></TableCell>
                 <TableCell align="right">Loyalty Points:</TableCell>
                 <TableCell align="left">{invoice?.LoyaltyPoints}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell>
+                  <Button onClick={this.print}>Print</Button>
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
