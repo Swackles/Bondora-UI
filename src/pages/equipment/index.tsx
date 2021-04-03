@@ -1,6 +1,6 @@
 import React from "react";
 import Equipment from './../../services/EquipmentService';
-import { Paper, TableContainer, TableHead, TableRow, TableCell, TableBody, Table } from '@material-ui/core';
+import { Paper, TableContainer, TableHead, TableRow, TableCell, TableBody, Table, Typography } from '@material-ui/core';
 import EquipmentTableRow from './../../components/equipmentTableRow';
 
 interface State {
@@ -42,22 +42,25 @@ class IndexEquipment extends React.Component<any, State> {
     const { equipments } = this.state;
 
     return (
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {equipments.map(row => {
-              return <EquipmentTableRow key={row.ID} equipment={row} onAddToCart={this.addToCart} />
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Paper>
+        <Typography variant="h4">Equipment</Typography>
+        <TableContainer style={{ margin: 20 }} component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {equipments.map(row => {
+                return <EquipmentTableRow key={row.ID} equipment={row} onAddToCart={this.addToCart} />
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
       );
   }
 }
